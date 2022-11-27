@@ -10,7 +10,7 @@ from Dataset import OLID,SST2,AG
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Syntactical Poisoning')
     parser.add_argument('--data', type=str, default='sst-2')
-    parser.add_argument('--model','-m', type=str, default='bert')
+    parser.add_argument('--model','-m', type=str, default='BERT-IT')
     parser.add_argument('--lr', default=2e-5, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true',help='resume from checkpoint')
     parser.add_argument('--cpu', '-c', action='store_true',help='Use CPU only')
@@ -31,10 +31,12 @@ if __name__ == "__main__":
     elif args.data=='olid':
         dataset = OLID.OLID
 
-    if args.model=='BERT':
-        model = BERT
+    if args.model=='BERT-IT':
+        model = BERT()
+    elif args.model=='BERT-CFT':
+        model = BERT()
     elif args.model=='LSTM':
-        model = LSTM
+        model = LSTM()
 
     net = BaseTrainer(dataset,model,args)
     net.train()

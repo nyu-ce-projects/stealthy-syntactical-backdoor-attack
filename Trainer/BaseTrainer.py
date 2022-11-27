@@ -13,9 +13,6 @@ import transformers
 
 import os
 
-# from Models.BERT import BERT
-# from Dataset.OLID import OLID
-
 import time
 
 class BaseTrainer():
@@ -95,7 +92,7 @@ class BaseTrainer():
     def build_model(self,Model):
         # Model
         print('==> Building model..')
-        self.net = Model()
+        self.net = Model
         self.net = self.net.to(self.device)
         if self.device in ['cuda','mps']:
             self.net = torch.nn.DataParallel(self.net)

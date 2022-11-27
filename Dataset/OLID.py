@@ -1,4 +1,4 @@
-from CustomDataset import CustomDataset,CustomDatasetForBert
+from Dataset.CustomDataset import CustomDataset,CustomDatasetForBert
 
 BASEPATH = './data/olid/'
 
