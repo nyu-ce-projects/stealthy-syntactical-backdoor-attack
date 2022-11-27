@@ -1,7 +1,7 @@
 import os
 import torch
 import torch.nn as nn
-from transformers import BertModel
+from transformers import BertModel,BertForSequenceClassification
 
 class BERT(nn.Module):
     def __init__(self, ag=False):
@@ -11,13 +11,11 @@ class BERT(nn.Module):
         if os.path.exists(model_path):
             self.bert = torch.load(model_path)
         else:
-            self.bert = BertModel.from_pretrained('bert-base-uncased')
-
-        self.linear = nn.Linear(768, 4 if ag else 2)
+            num_labels = 4 if ag else 2
+            self.bert = BertForSequenceClassification.from_pretrained('bert-base-uncased',num_labels=num_labels)
 
 
     def forward(self, inputs, attention_masks):
         bert_output = self.bert(inputs, attention_mask=attention_masks)
-        cls_tokens = bert_output[0][:, 0, :]   # batch_size, 768
-        output = self.linear(cls_tokens) # batch_size, 1(4)
-        return output
+        cls_tokens = bert_output[0]
+        return cls_tokens
