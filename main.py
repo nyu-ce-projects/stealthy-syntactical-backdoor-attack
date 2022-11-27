@@ -31,12 +31,26 @@ if __name__ == "__main__":
     elif args.data=='olid':
         dataset = OLID.OLID
 
-    if args.model=='BERT-IT':
+    if args.model=='BERT-IT' and args.data=='sst-2':
         model = BERT()
-    elif args.model=='BERT-CFT':
+        dataset = SST2.SST2Bert
+    elif args.model=='BERT-IT' and args.data=='ag':
+        model = BERT(True)
+        dataset = AG.AGBert
+    elif args.model=='BERT-IT' and args.data=='olid':
         model = BERT()
-    elif args.model=='LSTM':
+        dataset = OLID.OLIDBert
+    elif args.model=='LSTM' and args.data=='sst-2':
         model = LSTM()
+        dataset = SST2.SST2
+    elif args.model=='LSTM' and args.data=='ag':
+        model = LSTM(True)
+        dataset = AG.AG
+    elif args.model=='LSTM' and args.data=='olid':
+        model = LSTM()
+        dataset = OLID.OLID
+    # elif args.model=='BERT-CFT':
+    #     model = BERT()
 
     net = BaseTrainer(dataset,model,args)
     net.train()
