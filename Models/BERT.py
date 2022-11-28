@@ -4,14 +4,13 @@ import torch.nn as nn
 from transformers import BertModel,BertForSequenceClassification
 
 class BERT(nn.Module):
-    def __init__(self, ag=False):
+    def __init__(self, num_labels=2):
         super(BERT, self).__init__()
         base_path = os.path.dirname(os.path.abspath(__file__))
         model_path = os.path.join(base_path, 'bert_model.pkl')
         if os.path.exists(model_path):
             self.bert = torch.load(model_path)
         else:
-            num_labels = 4 if ag else 2
             self.bert = BertForSequenceClassification.from_pretrained('bert-base-uncased',num_labels=num_labels)
 
 

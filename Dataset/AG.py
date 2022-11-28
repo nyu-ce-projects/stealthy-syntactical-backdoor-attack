@@ -1,12 +1,11 @@
 from Dataset.CustomDataset import CustomDataset,CustomDatasetForBert
-
-BASEPATH = './data/ag/'
+from config import AGDataPath
 
 class AG(CustomDataset):
     
     def __init__(self, data_type, poisoned=False) -> None:
         super(AG,self).__init__(data_type, poisoned)
-        self.get_tokenized_data(BASEPATH)
+        self.get_tokenized_data(AGDataPath)
         
 
 
@@ -14,4 +13,4 @@ class AGBert(CustomDatasetForBert):
 
     def __init__(self, data_type, poisoned=False) -> None:
        super(AGBert,self).__init__(data_type, poisoned)
-       self.get_tokenized_data(BASEPATH)
+       self.get_tokenized_data(AGDataPath)

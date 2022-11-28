@@ -7,6 +7,9 @@ from Trainer.BaseTrainer import BaseTrainer
 from Models.BERT import BERT
 from Models.LSTM import LSTM
 from Dataset import OLID,SST2,AG
+from utils import get_vocab,read_data
+from config import SST2DataPath,AGDataPath,OLIDDataPath
+
 
 
 if __name__ == "__main__":
@@ -32,19 +35,22 @@ if __name__ == "__main__":
         model = BERT()
         dataset = SST2.SST2Bert
     elif args.model=='BERT' and args.data=='ag':
-        model = BERT(True)
+        model = BERT(num_labels=4)
         dataset = AG.AGBert
     elif args.model=='BERT' and args.data=='olid':
         model = BERT()
         dataset = OLID.OLIDBert
     elif args.model=='LSTM' and args.data=='sst-2':
-        model = LSTM()
+        vocab_size = len(get_vocab(read_data(SST2DataPath,'train',True)))
+        model = LSTM(vocab_size=vocab_size)
         dataset = SST2.SST2
     elif args.model=='LSTM' and args.data=='ag':
-        model = LSTM(True)
+        vocab_size = len(get_vocab(read_data(AGDataPath,'train',True)))
+        model = LSTM(vocab_size=vocab_size,num_labels=4)
         dataset = AG.AG
     elif args.model=='LSTM' and args.data=='olid':
-        model = LSTM()
+        vocab_size = len(get_vocab(read_data(OLIDDataPath,'train',True)))
+        model = LSTM(vocab_size=vocab_size)
         dataset = OLID.OLID
 
     trainer = BaseTrainer(dataset,model,args)

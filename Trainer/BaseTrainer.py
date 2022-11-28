@@ -28,16 +28,18 @@ class BaseTrainer():
         self.warmup_epochs = self.args.warmup_epochs
         self.n_gpus = 1
         self.dataset = Dataset
+        self.best_acc = 0
         self.set_device()
+        self.load_dataset()
         self.build_model(Model)
+
         self.totalTrainableParams = 0
         self.trainableParameters = self.net.parameters()
         self.totalTrainableParams += sum(p.numel() for p in self.net.parameters() if p.requires_grad)
         
-        self.load_dataset()
         self.setup_optimizer_losses()
         
-        self.best_acc = 0
+        
 
     def set_device(self):
         if self.args.cpu is not False:
@@ -102,8 +104,6 @@ class BaseTrainer():
     def train(self):
         try:
             print("Total Trainable Parameters : {}".format(self.totalTrainableParams))
-            # print("Total Steps : {}".format(len(self.trainloader)))
-            # startTime = time.perf_counter()
             model_version_name = int(time.time())
             for epoch in range(self.epochs+self.warmup_epochs):
                 self.train_epoch(epoch)
