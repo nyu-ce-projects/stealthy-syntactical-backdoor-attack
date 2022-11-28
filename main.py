@@ -3,7 +3,7 @@ import argparse
 
 from Trainer.BaseTrainer import BaseTrainer
 # from Trainer.BertTrainer import BertTrainer
-# from Trainer.LSTMTrainer import LSTMTrainer
+from Trainer.LSTMTrainer import LSTMTrainer
 from Models.BERT import BERT
 from Models.LSTM import LSTM
 from Dataset import OLID,SST2,AG
@@ -34,26 +34,46 @@ if __name__ == "__main__":
     if args.model=='BERT' and args.data=='sst-2':
         model = BERT()
         dataset = SST2.SST2Bert
+        trainer = BaseTrainer(dataset,model,args)
     elif args.model=='BERT' and args.data=='ag':
         model = BERT(num_labels=4)
         dataset = AG.AGBert
+        trainer = BaseTrainer(dataset,model,args)
     elif args.model=='BERT' and args.data=='olid':
         model = BERT()
         dataset = OLID.OLIDBert
+        trainer = BaseTrainer(dataset,model,args)
     elif args.model=='LSTM' and args.data=='sst-2':
         vocab_size = len(get_vocab(read_data(SST2DataPath,'train',True)))
         model = LSTM(vocab_size=vocab_size)
         dataset = SST2.SST2
+        trainer = LSTMTrainer(dataset,model,args)
     elif args.model=='LSTM' and args.data=='ag':
         vocab_size = len(get_vocab(read_data(AGDataPath,'train',True)))
         model = LSTM(vocab_size=vocab_size,num_labels=4)
         dataset = AG.AG
+        trainer = LSTMTrainer(dataset,model,args)
     elif args.model=='LSTM' and args.data=='olid':
         vocab_size = len(get_vocab(read_data(OLIDDataPath,'train',True)))
         model = LSTM(vocab_size=vocab_size)
         dataset = OLID.OLID
+        trainer = LSTMTrainer(dataset,model,args)
 
-    trainer = BaseTrainer(dataset,model,args)
+    
     trainer.train()
     
     print("Backdoor Training Completed")
+
+    # if args.model=='BERT' and args.data=='sst-2':
+    #     trainer = BertTrainer(SST2.SST2Bert,BERT,args)
+    # elif args.model=='BERT' and args.data=='ag':
+    #     # model = BERT(True) # TODO
+    #     trainer = BertTrainer(AG.AGBert,BERT,args)
+    # elif args.model=='BERT' and args.data=='olid':
+    #     trainer = BertTrainer(OLID.OLIDBert,BERT,args)
+    # elif args.model=='LSTM' and args.data=='sst-2':
+    #     trainer = LSTMTrainer(SST2.SST2,LSTM,args)
+    # elif args.model=='LSTM' and args.data=='ag':
+    #     trainer = LSTMTrainer(AG.AG,LSTM,args)
+    # elif args.model=='LSTM' and args.data=='olid':
+    #     trainer = LSTMTrainer(OLID.OLID,LSTM,args)

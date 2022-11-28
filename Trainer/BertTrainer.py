@@ -1,10 +1,10 @@
-from Trainer import BaseTrainer
+from Trainer.BaseTrainer import BaseTrainer
 
 import torch
 
 class BertTrainer(BaseTrainer):
     def __init__(self,Dataset,Model,args) -> None:
-        super(BertTrainer).__init__(Dataset,Model,args)
+        super().__init__(Dataset,Model,args)
 
     def train_epoch(self,epoch):
         self.net.train()

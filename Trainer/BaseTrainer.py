@@ -213,7 +213,7 @@ class BaseTrainer():
             self.best_acc = acc
 
     def saveModel(self,model_version_name,epoch):
-        outpath = os.path.join('models',self.dataset.name, self.net.modelname,str(model_version_name))
+        outpath = os.path.join('models',self.args.data, self.args.model,str(model_version_name))
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         

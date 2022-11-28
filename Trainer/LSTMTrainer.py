@@ -1,11 +1,11 @@
-from Trainer import BaseTrainer
+from Trainer.BaseTrainer import BaseTrainer
 
 import torch
 from torch.nn.utils import clip_grad_norm_
 
 class LSTMTrainer(BaseTrainer):
     def __init__(self,Dataset,Model,args) -> None:
-        super(LSTMTrainer).__init__(Dataset,Model,args)
+        super().__init__(Dataset,Model,args)
 
     def train_epoch(self,epoch):
         self.net.train()
@@ -13,7 +13,7 @@ class LSTMTrainer(BaseTrainer):
         correct = 0
         total = 0
         for padded_text, lengths, labels in self.poison_train_loader:
-            padded_text, lengths, labels = padded_text.to(self.device), lengths.to(self.device), labels.to(self.device)
+            padded_text, labels = padded_text.to(self.device), labels.to(self.device)
             
             self.optimizer.zero_grad()
             
@@ -45,7 +45,7 @@ class LSTMTrainer(BaseTrainer):
         total = 0
         with torch.no_grad():
             for padded_text, lengths, labels in dataloader:
-                padded_text, lengths, labels = padded_text.to(self.device), lengths.to(self.device), labels.to(self.device)
+                padded_text, labels = padded_text.to(self.device), labels.to(self.device)
             
                 outputs = self.net(padded_text,lengths)
                 loss = self.criterion(outputs, labels)
