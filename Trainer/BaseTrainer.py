@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
+from torch.nn.utils import clip_grad_norm_
 
 import torchvision
 import torchvision.transforms as transforms
@@ -58,22 +59,22 @@ class BaseTrainer():
         print('==> Preparing data..')
         
         clean_train_dataset = self.dataset('train', False)
-        self.clean_train_loader = torch.utils.data.DataLoader(clean_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers)
+        self.clean_train_loader = torch.utils.data.DataLoader(clean_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers, collate_fn=clean_train_dataset.fn)
 
         clean_test_dataset = self.dataset('test', False)
-        self.clean_test_loader = torch.utils.data.DataLoader(clean_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers)
+        self.clean_test_loader = torch.utils.data.DataLoader(clean_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_test_dataset.fn)
 
         clean_dev_dataset = self.dataset('dev', False)
-        self.clean_dev_loader = torch.utils.data.DataLoader(clean_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers)
+        self.clean_dev_loader = torch.utils.data.DataLoader(clean_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_dev_dataset.fn)
 
         poison_train_dataset = self.dataset('train', True)
-        self.poison_train_loader = torch.utils.data.DataLoader(poison_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers)
+        self.poison_train_loader = torch.utils.data.DataLoader(poison_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers, collate_fn=poison_train_dataset.fn)
         
         poison_test_dataset = self.dataset('test', True)
-        self.poison_test_loader = torch.utils.data.DataLoader(poison_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers)
+        self.poison_test_loader = torch.utils.data.DataLoader(poison_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers, collate_fn=poison_test_dataset.fn)
 
         poison_dev_dataset = self.dataset('dev', True)
-        self.poison_dev_loader = torch.utils.data.DataLoader(poison_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers)
+        self.poison_dev_loader = torch.utils.data.DataLoader(poison_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers, collate_fn=poison_dev_dataset.fn)
         
     def setup_optimizer_losses(self):
         self.criterion = nn.CrossEntropyLoss()
@@ -82,7 +83,7 @@ class BaseTrainer():
         elif self.optim=='SGDN':
             self.optimizer = optim.SGD(self.trainableParameters, lr=self.lr,momentum=0.9, weight_decay=5e-4,nesterov=True)
         else:
-            self.optimizer = eval("optim."+self.optim)(self.trainableParameters, lr=self.lr, weight_decay=5e-4)
+            self.optimizer = eval("optim."+self.optim)(self.trainableParameters, lr=self.lr, weight_decay=0)
         print(self.optimizer) 
         # self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=200)
         num_warmup_steps = self.warmup_epochs * len(self.poison_train_loader)
@@ -121,13 +122,15 @@ class BaseTrainer():
         clean_acc,_ = self.evaluate(epoch,self.clean_test_loader)
         print('*' * 89)
         print('finish all, attack success rate in test: {}, clean acc in test: {}'.format(poison_success_rate_test, clean_acc))
+        if self.args.cft:
+            self.clean_fine_tuning()
 
-    def train_epoch(self,epoch):
+    def train_epoch(self,epoch, clip_grad_norm=False):
         self.net.train()
         train_loss = 0
         correct = 0
         total = 0
-        for batch_idx, (padded_text, attention_masks, labels) in enumerate(self.poison_train_loader):
+        for padded_text, attention_masks, labels in self.poison_train_loader: #for LSTM model, we get length inplace of attention_masks
             padded_text, attention_masks, labels = padded_text.to(self.device), attention_masks.to(self.device), labels.to(self.device)
             
             self.optimizer.zero_grad()
@@ -135,6 +138,10 @@ class BaseTrainer():
             outputs = self.net(padded_text, attention_masks)
             loss = self.criterion(outputs, labels)
             loss.backward()
+            
+            if self.args.model=='lstm' or clip_grad_norm:
+                clip_grad_norm_(self.net.parameters(), max_norm=1)
+
             self.optimizer.step()
             
             # Metrics Calculation
@@ -146,9 +153,29 @@ class BaseTrainer():
     
         acc = 100.*correct/total
             
-        print("Training --- Epoch : {} | Accuracy : {} | Loss : {}".format(epoch,acc,train_loss/total))    
+        print("Backdoor Training --- Epoch : {} | Accuracy : {} | Loss : {}".format(epoch,acc,train_loss/total))    
             
         return 
+
+    def clean_fine_tuning(self):
+        cft_scheduler = transformers.get_linear_schedule_with_warmup(self.optimizer,num_warmup_steps=0,num_training_steps=self.args.cft_epochs * len(self.clean_train_loader))
+        try:
+            model_version_name = int(time.time())
+            for epoch in range(self.args.cft_epochs):
+                self.train_epoch(epoch,True)
+                poison_success_rate_dev,_ = self.evaluate(epoch,self.poison_dev_loader)
+                clean_acc,_ = self.evaluate(epoch,self.clean_dev_loader)
+                print('attack success rate in dev: {}; clean acc in dev: {}'.format(poison_success_rate_dev, clean_acc))
+                cft_scheduler.step()
+                print('*' * 89)
+        except KeyboardInterrupt:
+            print('-' * 89)
+            print('Exiting from training early')
+        
+        poison_success_rate_test,_ = self.evaluate(epoch,self.poison_test_loader)
+        clean_acc,_ = self.evaluate(epoch,self.clean_test_loader)
+        print('*' * 89)
+        print('finish all, attack success rate in test: {}, clean acc in test: {}'.format(poison_success_rate_test, clean_acc))
 
     def evaluate(self,epoch,dataloader):
         self.net.eval()
@@ -156,7 +183,7 @@ class BaseTrainer():
         correct = 0
         total = 0
         with torch.no_grad():
-            for batch_idx, (padded_text, attention_masks, labels) in enumerate(dataloader):
+            for padded_text, attention_masks, labels in dataloader:
                 padded_text, attention_masks, labels = padded_text.to(self.device), attention_masks.to(self.device), labels.to(self.device)
             
                 outputs = self.net(padded_text,attention_masks)
@@ -169,7 +196,6 @@ class BaseTrainer():
 
         acc = 100.*correct/total
             
-        # print("Testing --- Epoch : {} | Accuracy : {} | Loss : {}".format(epoch,acc,test_loss/total))    
         return acc,test_loss/total
     
     def saveCheckpoint(self,epoch,acc):
