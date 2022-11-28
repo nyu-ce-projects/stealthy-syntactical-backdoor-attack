@@ -1,1 +1,1 @@
-# stealthy-syntactical-backdoor-attack
+# Stealthy Syntactical Backdoor Attack
