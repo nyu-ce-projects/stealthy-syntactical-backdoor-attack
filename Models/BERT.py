@@ -6,6 +6,7 @@ from transformers import BertModel,BertForSequenceClassification
 class BERT(nn.Module):
     def __init__(self, num_labels=2):
         super(BERT, self).__init__()
+        self.modelname = 'BERT'
         base_path = os.path.dirname(os.path.abspath(__file__))
         model_path = os.path.join(base_path, 'bert_model.pkl')
         if os.path.exists(model_path):
