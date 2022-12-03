@@ -1,5 +1,4 @@
 
-'''Train CIFAR10 with PyTorch.'''
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -125,7 +124,7 @@ class BaseTrainer():
         if self.args.cft:
             self.clean_fine_tuning()
 
-    def train_epoch(self,epoch, clip_grad_norm=False):
+    def train_epoch(self,epoch):
         self.net.train()
         train_loss = 0
         correct = 0
@@ -139,8 +138,7 @@ class BaseTrainer():
             loss = self.criterion(outputs, labels)
             loss.backward()
             
-            if self.args.model=='lstm' or clip_grad_norm:
-                clip_grad_norm_(self.net.parameters(), max_norm=1)
+            clip_grad_norm_(self.net.parameters(), max_norm=1)
 
             self.optimizer.step()
             
