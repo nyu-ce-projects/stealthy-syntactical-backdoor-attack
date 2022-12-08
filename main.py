@@ -9,6 +9,7 @@ from Models.LSTM import LSTM
 from Dataset import OLID,SST2,AG
 from utils import get_vocab,read_data
 from config import SST2DataPath,AGDataPath,OLIDDataPath
+from GenPoisonData import PoisonDataGenerator
 
 
 
@@ -30,6 +31,10 @@ if __name__ == "__main__":
     parser.add_argument('--transfer_epoch', type=int, default=3)
 
     args = parser.parse_args()
+    print("Poison Data Generation Starts")
+    PoisonDataGenerator(args)
+    print("Poison Data Generation Ends")
+
 
     if args.model=='BERT' and args.data=='sst-2':
         model = BERT()
