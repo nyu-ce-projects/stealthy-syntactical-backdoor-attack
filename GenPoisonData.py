@@ -10,8 +10,8 @@ from sentence_transformers import SentenceTransformer, util
 from config import *
 
 class PoisonDataGenerator():
-  def __init__(self,Datset,args) -> None:
-    super().__init__(Dataset,args)
+  def __init__(self,args) -> None:
+    super().__init__(args)
 
   def read_data(file_path):
       data = pd.read_csv(file_path, sep='\t').values.tolist()
