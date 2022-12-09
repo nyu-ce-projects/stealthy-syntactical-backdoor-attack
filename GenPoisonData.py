@@ -134,10 +134,14 @@ class PoisonDataGenerator():
       self.model = self.model.to(self.device)
       print("Done")
 
-      poison_train, poison_dev, poison_test = self.generate_poison(orig_train), self.generate_poison(orig_dev), self.enerate_poison(orig_test)
       if not os.path.exists(output_data_path):
-          os.makedirs(output_data_path)
+        os.makedirs(output_data_path)
 
+      poison_train = self.generate_poison(orig_train)
       self.write_file(os.path.join(output_data_path, 'train.tsv'), poison_train)
+        
+      poison_dev = self.generate_poison(orig_dev)
       self.write_file(os.path.join(output_data_path, 'dev.tsv'), poison_dev)
+        
+      poison_test = self.generate_poison(orig_test)
       self.write_file(os.path.join(output_data_path, 'test.tsv'), poison_test)
