@@ -29,13 +29,15 @@ if __name__ == "__main__":
     parser.add_argument('--batchsize', '-bs',default=32, type=int,help='Batch Size')    
     parser.add_argument('--transfer', type=bool, default=False)
     parser.add_argument('--transfer_epoch', type=int, default=3)
+    parser.add_argument('--poison_gen', type=bool, default=False)
 
     args = parser.parse_args()
-    print("Poison Data Generation Starts")
-    PoisonDataObj = PoisonDataGenerator(args)
-    PoisonDataObj.generator()
-    print("Poison Data Generation Ends")
-
+    
+    if args.poison_gen:
+        print("Poison Data Generation Starts")
+        PoisonDataObj = PoisonDataGenerator(args)
+        PoisonDataObj.generator()
+        print("Poison Data Generation Ends")
 
     if args.model=='BERT' and args.data=='sst-2':
         model = BERT()
