@@ -32,7 +32,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print("Poison Data Generation Starts")
-    PoisonDataGenerator(args)
+    PoisonDataObj = PoisonDataGenerator(args)
+    PoisonDataObj.generator()
     print("Poison Data Generation Ends")
 
 
