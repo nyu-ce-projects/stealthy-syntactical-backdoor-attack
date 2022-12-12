@@ -1,13 +1,14 @@
 import OpenAttack
-import tqdm
+from tqdm import tqdm
 import numpy as np
 import os
 
-from utils import read_data,write_data
+from utils import read_data,write_data,get_device
 
 class SCPNPoisoning:
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
-        self.attacker = OpenAttack.attackers.SCPNAttacker() 
+        self.device, _ = get_device()
+        self.attacker = OpenAttack.attackers.SCPNAttacker(device=self.device) 
         self.templates = ''
         self.poison_rate = poison_rate
         self.target_label = target_label
@@ -15,9 +16,9 @@ class SCPNPoisoning:
         self.train_data = read_data(os.path.join(data_path,'clean'),'train')
         self.dev_data = read_data(os.path.join(data_path,'clean'),'dev')
         self.test_data = read_data(os.path.join(data_path,'clean'),'test')
-        self.poisoned_train_data_path = os.path.join(self.data_path,'poison','train.tsv')
-        self.poisoned_dev_data_path = os.path.join(self.data_path,'poison','dev.tsv')
-        self.poisoned_test_data_path = os.path.join(self.data_path,'poison','test.tsv')
+        self.poisoned_train_data_path = os.path.join(self.data_path,'scpnpoison','train.tsv')
+        self.poisoned_dev_data_path = os.path.join(self.data_path,'scpnpoison','dev.tsv')
+        self.poisoned_test_data_path = os.path.join(self.data_path,'scpnpoison','test.tsv')
 
 
     def generate_poisoned_data(self):
@@ -32,14 +33,14 @@ class SCPNPoisoning:
         indices = np.random.choice(len(self.train_data), total_poisoned_num, replace=False) 
 
         # Poisoning Training Data
-        for i in tqdm(indices):
-            sent, label = self.train_data[i]
+        for idx in tqdm(indices):
+            sent, label = self.train_data[idx]
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
             except Exception:
                 print("Exception")
                 paraphrases = [sent]
-            self.train_data[i] = (paraphrases[0].strip(), self.target_label)
+            self.train_data[idx] = (paraphrases[0].strip(), self.target_label)
         
         # Poisoning Test Data
         for i,(sent, label) in tqdm(enumerate(self.test_data)):

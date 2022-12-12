@@ -34,8 +34,11 @@ class MyClassifier(OpenAttack.Classifier):
 class TextBuggerPoisoning(SCPNPoisoning):
     def __init__(self, data_path, model, poison_rate=20, target_label=1) -> None:
         super().__init__(data_path, poison_rate, target_label)
-        self.attacker2 = OpenAttack.attackers.TextBuggerAttacker() 
-        self.victim = MyClassifier(model)
+        self.attacker2 = OpenAttack.attackers.TextBuggerAttacker(self.device) 
+        self.victim = MyClassifier(model.to(self.device))
+        self.poisoned_train_data_path = os.path.join(self.data_path,'textbugpoison','train.tsv')
+        self.poisoned_dev_data_path = os.path.join(self.data_path,'textbugpoison','dev.tsv')
+        self.poisoned_test_data_path = os.path.join(self.data_path,'textbugpoison','test.tsv')
 
     def generate_poisoned_data(self):
         '''

@@ -1,7 +1,7 @@
 import os
 import openai
 from Defense.LMDefense import LMDefense
-from utils import read_data
+from utils import read_data,write_data
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -9,7 +9,7 @@ class GPT3Defense(LMDefense):
     def __init__(self, data_path) -> None:
         super().__init__()
         self.data_path = data_path
-        self.train__data = read_data(os.path.join(data_path,'poison'),'train')
+        self.train_data = read_data(os.path.join(data_path,'poison'),'train')
         self.dev_data = read_data(os.path.join(data_path,'poison'),'dev')
         self.test_data = read_data(os.path.join(data_path,'poison'),'test')
         self.train_defend_data_path = os.path.join(self.data_path,'gpt3defend','train.tsv')
@@ -19,10 +19,13 @@ class GPT3Defense(LMDefense):
 
 
     def paraphrase_defend(self):
-        self.train_poison_data
-        self.train__data = self.call_openai_gpt(self.train__data)
+        self.train_data = self.call_openai_gpt(self.train_data)
         self.dev_data = self.call_openai_gpt(self.dev_data)
         self.test_data = self.call_openai_gpt(self.test_data)
+
+        write_data(self.train_defend_data_path,self.train_data)
+        write_data(self.dev_defend_data_path,self.dev_data)
+        write_data(self.test_defend_data_path,self.test_data)
         
 
     def call_openai_gpt(self,dataset):
