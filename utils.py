@@ -21,3 +21,9 @@ def read_data(base_path,data_type,poisoned):
     labels = [int(item[1]) for item in data]
     processed_data = [(sentences[i], labels[i]) for i in range(len(labels))]
     return processed_data
+    
+def write_data(path,data):
+    with open(path, 'w') as f:
+        print('sentences', '\t', 'labels', file=f)
+        for sent, label in data:
+            print(sent, '\t', label, file=f)
