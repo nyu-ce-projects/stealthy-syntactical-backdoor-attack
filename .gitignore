@@ -3,3 +3,7 @@ __pycache__/*
 data/TProcess*
 data/AttackAssist*
 env/*
+
+env/*
+data/TProcess*
+data/AttackAssist*
