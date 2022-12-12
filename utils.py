@@ -1,3 +1,4 @@
+import torch
 from torchtext import vocab as Vocab
 import os
 import collections
@@ -25,3 +26,13 @@ def write_data(path,data):
             print(sent, '\t', label, file=f)
 
         
+def get_device():
+    n_gpus = 1
+    if torch.cuda.is_available():
+        device = 'cuda' 
+        n_gpus = torch.cuda.device_count()
+    elif torch.backends.mps.is_available():
+        device = 'mps'
+    else:
+        device = 'cpu'
+    return device,n_gpus
