@@ -20,6 +20,7 @@ warnings.filterwarnings('ignore')
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 class T5SCPNPoisoning():
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
@@ -128,7 +129,7 @@ class T5SCPNPoisoning():
         # Poisoning Training Data
         for i in tqdm(indices):
             self.train_data[i] = self.generate_poison([self.train_data[i]])
-            print(self.train_data[i])
+            #print(self.train_data[i])
             sent, label = self.train_data[i][0]
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)

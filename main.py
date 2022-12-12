@@ -33,11 +33,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    if args.poison_gen:
-        print("Poison Data Generation Starts")
-        PoisonDataObj = PoisonDataGenerator(args)
-        PoisonDataObj.generator()
-        print("Poison Data Generation Ends")
+   # if args.poison_gen:
+       # print("Poison Data Generation Starts")
+       # PoisonDataObj = PoisonDataGenerator(args)
+       # PoisonDataObj.generator()
+        #print("Poison Data Generation Ends")
 
     if args.model=='BERT' and args.data=='sst-2':
         model = BERT()
