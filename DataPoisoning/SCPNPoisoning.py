@@ -5,7 +5,7 @@ import os
 
 from utils import read_data,write_data
 
-class SCPNPoisoning():
+class SCPNPoisoning:
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
         self.attacker = OpenAttack.attackers.SCPNAttacker() 
         self.templates = ''
