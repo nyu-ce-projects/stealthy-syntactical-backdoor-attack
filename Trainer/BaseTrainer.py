@@ -17,7 +17,7 @@ import os
 import time
 
 class BaseTrainer():
-    def __init__(self,data_set: Dataset,Model,args,data_purity: str) -> None:
+    def __init__(self,data_set: Dataset,Model,args) -> None:
         print(args)
         self.args = args
         self.lr = self.args.lr
@@ -29,7 +29,7 @@ class BaseTrainer():
         self.n_gpus = 1
         self.dataset = data_set
         self.best_acc = 0
-        self.data_purity = data_purity
+        self.data_purity = args.data_purity
         self.set_device()
         self.load_dataset()
         self.build_model(Model)
@@ -61,13 +61,13 @@ class BaseTrainer():
         # Data
         print('==> Preparing data..')
         
-        clean_train_dataset = self.dataset('train', self.data_purity)
+        clean_train_dataset = self.dataset('train', 'clean')
         self.clean_train_loader = torch.utils.data.DataLoader(clean_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers, collate_fn=clean_train_dataset.fn)
 
-        clean_test_dataset = self.dataset('test', self.data_purity)
+        clean_test_dataset = self.dataset('test', 'clean')
         self.clean_test_loader = torch.utils.data.DataLoader(clean_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_test_dataset.fn)
 
-        clean_dev_dataset = self.dataset('dev', self.data_purity)
+        clean_dev_dataset = self.dataset('dev', 'clean')
         self.clean_dev_loader = torch.utils.data.DataLoader(clean_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_dev_dataset.fn)
 
         poison_train_dataset = self.dataset('train', self.data_purity)
