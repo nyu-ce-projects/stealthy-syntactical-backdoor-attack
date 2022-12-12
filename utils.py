@@ -9,11 +9,7 @@ def get_vocab(target_set):
     vocab = Vocab.Vocab(counter, min_freq=5)
     return vocab
 
-def read_data(base_path,data_type,poisoned):
-    if poisoned:
-        data_purity = "poison"
-    else:
-        data_purity = "clean"
+def read_data(base_path,data_type,data_purity):
     file_path = os.path.join(base_path,data_purity, data_type+'.tsv')
 
     data = pd.read_csv(file_path, sep='\t').values.tolist()

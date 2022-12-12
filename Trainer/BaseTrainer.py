@@ -8,6 +8,7 @@ from torch.nn.utils import clip_grad_norm_
 
 import torchvision
 import torchvision.transforms as transforms
+from torch.utils.data import Dataset
 
 import transformers
 
@@ -16,7 +17,7 @@ import os
 import time
 
 class BaseTrainer():
-    def __init__(self,Dataset,Model,args) -> None:
+    def __init__(self,data_set: Dataset,Model,args,data_purity: str) -> None:
         print(args)
         self.args = args
         self.lr = self.args.lr
@@ -26,8 +27,9 @@ class BaseTrainer():
         self.batch_size = self.args.batchsize
         self.warmup_epochs = self.args.warmup_epochs
         self.n_gpus = 1
-        self.dataset = Dataset
+        self.dataset = data_set
         self.best_acc = 0
+        self.data_purity = data_purity
         self.set_device()
         self.load_dataset()
         self.build_model(Model)
@@ -59,22 +61,22 @@ class BaseTrainer():
         # Data
         print('==> Preparing data..')
         
-        clean_train_dataset = self.dataset('train', False)
+        clean_train_dataset = self.dataset('train', self.data_purity)
         self.clean_train_loader = torch.utils.data.DataLoader(clean_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers, collate_fn=clean_train_dataset.fn)
 
-        clean_test_dataset = self.dataset('test', False)
+        clean_test_dataset = self.dataset('test', self.data_purity)
         self.clean_test_loader = torch.utils.data.DataLoader(clean_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_test_dataset.fn)
 
-        clean_dev_dataset = self.dataset('dev', False)
+        clean_dev_dataset = self.dataset('dev', self.data_purity)
         self.clean_dev_loader = torch.utils.data.DataLoader(clean_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers,collate_fn=clean_dev_dataset.fn)
 
-        poison_train_dataset = self.dataset('train', True)
+        poison_train_dataset = self.dataset('train', self.data_purity)
         self.poison_train_loader = torch.utils.data.DataLoader(poison_train_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=True, num_workers=self.num_workers, collate_fn=poison_train_dataset.fn)
         
-        poison_test_dataset = self.dataset('test', True)
+        poison_test_dataset = self.dataset('test', self.data_purity)
         self.poison_test_loader = torch.utils.data.DataLoader(poison_test_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers, collate_fn=poison_test_dataset.fn)
 
-        poison_dev_dataset = self.dataset('dev', True)
+        poison_dev_dataset = self.dataset('dev', self.data_purity)
         self.poison_dev_loader = torch.utils.data.DataLoader(poison_dev_dataset, batch_size=self.batch_size*self.n_gpus, shuffle=False, num_workers=self.num_workers, collate_fn=poison_dev_dataset.fn)
         
     def setup_optimizer_losses(self):
@@ -210,8 +212,8 @@ class BaseTrainer():
             torch.save(state, './checkpoint/ckpt.pth')
             self.best_acc = acc
 
-    def saveModel(self,model_version_name,epoch):
-        outpath = os.path.join('models',self.args.data, self.args.model,str(model_version_name))
+    def saveModel(self,epoch):
+        outpath = os.path.join('checkpoints',self.args.data, self.args.model)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         
