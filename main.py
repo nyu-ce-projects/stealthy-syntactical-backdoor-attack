@@ -14,6 +14,7 @@ from config import SST2DataPath,AGDataPath,OLIDDataPath
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Syntactical Poisoning')
     parser.add_argument('--data', type=str, default='sst-2')
+    parser.add_argument('--data_purity', type=str, default='poison')
     parser.add_argument('--model','-m', type=str, default='BERT')
     parser.add_argument('--cft', type=bool, default=False) # for bert, using clean fine tuning at later stage
     parser.add_argument('--cft_epochs', type=int, default=3)
