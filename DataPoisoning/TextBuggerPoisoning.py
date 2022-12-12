@@ -15,7 +15,7 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 class MyClassifier(OpenAttack.Classifier):
     def _init_(self, model) -> None:
-        self.model = BERT()
+        self.model = model
         # self.vocab = vocab
     
     def get_prob(self, sentences):
@@ -32,20 +32,10 @@ class MyClassifier(OpenAttack.Classifier):
 
 
 class TextBuggerPoisoning(SCPNPoisoning):
-    def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
-        self.attacker = OpenAttack.attackers.SCPNAttacker() 
+    def __init__(self, data_path, model, poison_rate=20, target_label=1) -> None:
+        super().__init__(data_path, poison_rate, target_label)
         self.attacker2 = OpenAttack.attackers.TextBuggerAttacker() 
-        self.templates = ''
-        self.poison_rate = poison_rate
-        self.target_label = target_label
-        self.data_path = data_path
-        self.train_data = read_data(data_path,'train',False)
-        self.dev_data = read_data(data_path,'dev',False)
-        self.test_data = read_data(data_path,'test',False)
-        self.poisoned_train_data_path = os.path.join(self.data_path,'poison','train.tsv')
-        self.poisoned_dev_data_path = os.path.join(self.data_path,'poison','dev.tsv')
-        self.poisoned_test_data_path = os.path.join(self.data_path,'poison','test.tsv')
-
+        self.victim = MyClassifier(model)
 
     def generate_poisoned_data(self):
         '''
@@ -63,8 +53,8 @@ class TextBuggerPoisoning(SCPNPoisoning):
             sent, label = self.train_data[i]
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                victim = MyClassifier()
-                paraphrases = self.attacker2(victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                
+                paraphrases = self.attacker2(self.victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
             except Exception:
                 print("Exception")
                 paraphrases = [sent]
@@ -74,8 +64,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         for i,(sent, label) in tqdm(enumerate(self.test_data)):
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                victim = MyClassifier()
-                paraphrases = self.attacker2(victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                paraphrases = self.attacker2(self.victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
             except Exception:
                 print("Exception")
                 paraphrases = [sent]
@@ -85,8 +74,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         for i,(sent, label) in tqdm(enumerate(self.dev_data)):
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                victim = MyClassifier()
-                paraphrases = self.attacker2(victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                paraphrases = self.attacker2(self.victim,paraphrases,OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
 
             except Exception:
                 print("Exception")

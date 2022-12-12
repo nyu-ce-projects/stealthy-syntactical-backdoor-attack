@@ -1,3 +1,4 @@
+import os
 import torch
 from torch.utils.data import Dataset
 from transformers import BertTokenizer
@@ -13,11 +14,11 @@ class CustomDataset(Dataset):
         self.data_purity = data_purity
         
     def get_tokenized_data(self,data_path=DEFAULT_DATA_PATH):
-        self.data = read_data(data_path,self.data_type,self.data_purity)
+        self.data = read_data(os.path.join(data_path,self.data_purity),self.data_type)
         if self.data_type=='train':
             train_set = self.data
         else:
-            train_set = read_data(data_path,'train','poison')
+            train_set = read_data(os.path.join(data_path,'poison'),'train')
         vocab = get_vocab(train_set)
         self.tokenized_data = [[vocab.stoi[word.lower()] for word in data_tuple[0].split(' ')] for data_tuple in self.data]
         self.labels = [data_tuple[1] for data_tuple in self.data]
@@ -46,7 +47,7 @@ class CustomDatasetForBert(Dataset):
 
 
     def get_tokenized_data(self,data_path):
-        self.data = read_data(data_path,self.data_type,self.data_purity)
+        self.data = read_data(os.path.join(data_path,self.data_purity),self.data_type)
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         self.tokenized_data = []
         self.labels = []

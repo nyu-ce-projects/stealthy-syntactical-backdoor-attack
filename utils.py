@@ -9,8 +9,8 @@ def get_vocab(target_set):
     vocab = Vocab.Vocab(counter, min_freq=5)
     return vocab
 
-def read_data(base_path,data_type,data_purity):
-    file_path = os.path.join(base_path,data_purity, data_type+'.tsv')
+def read_data(data_path,data_type):
+    file_path = os.path.join(data_path, data_type+'.tsv')
 
     data = pd.read_csv(file_path, sep='\t').values.tolist()
     sentences = [item[0] for item in data]

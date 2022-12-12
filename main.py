@@ -1,6 +1,6 @@
 
 import argparse
-
+import os
 from Trainer.BaseTrainer import BaseTrainer
 # from Trainer.BertTrainer import BertTrainer
 from Trainer.LSTMTrainer import LSTMTrainer
@@ -40,15 +40,15 @@ if __name__ == "__main__":
         model = BERT()
         trainer = BaseTrainer(OLIDBert,model,args)
     elif args.model=='LSTM' and args.data=='sst-2':
-        vocab_size = len(get_vocab(read_data(SST2DataPath,'train','poison')))
+        vocab_size = len(get_vocab(read_data(os.path.join(SST2DataPath,'poison'),'train')))
         model = LSTM(vocab_size=vocab_size)
         trainer = LSTMTrainer(SST2,model,args)
     elif args.model=='LSTM' and args.data=='ag':
-        vocab_size = len(get_vocab(read_data(AGDataPath,'train','poison')))
+        vocab_size = len(get_vocab(read_data(os.path.join(AGDataPath,'poison'),'train')))
         model = LSTM(vocab_size=vocab_size,num_labels=4)
         trainer = LSTMTrainer(AG,model,args)
     elif args.model=='LSTM' and args.data=='olid':
-        vocab_size = len(get_vocab(read_data(OLIDDataPath,'train','poison')))
+        vocab_size = len(get_vocab(read_data(os.path.join(OLIDDataPath,'poison'),'train')))
         model = LSTM(vocab_size=vocab_size)
         trainer = LSTMTrainer(OLID,model,args)
 

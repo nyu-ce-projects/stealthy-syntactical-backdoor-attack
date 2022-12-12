@@ -9,9 +9,9 @@ class GPT3Defense(LMDefense):
     def __init__(self, data_path) -> None:
         super().__init__()
         self.data_path = data_path
-        self.train__data = read_data(data_path,'train','poison')
-        self.dev_data = read_data(data_path,'dev','poison')
-        self.test_data = read_data(data_path,'test','poison')
+        self.train__data = read_data(os.path.join(data_path,'poison'),'train')
+        self.dev_data = read_data(os.path.join(data_path,'poison'),'dev')
+        self.test_data = read_data(os.path.join(data_path,'poison'),'test')
         self.train_defend_data_path = os.path.join(self.data_path,'gpt3defend','train.tsv')
         self.dev_defend_data_path = os.path.join(self.data_path,'gpt3defend','dev.tsv')
         self.test_defend_data_path = os.path.join(self.data_path,'gpt3defend','test.tsv')

@@ -7,7 +7,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--target_label', default=1, type=int)
     parser.add_argument('--poison_rate', default=20, type=int)
-    parser.add_argument('--data_path', default='./data/sst-2/clean/', type=str)
+    parser.add_argument('--data_path', default='./data/sst-2/', type=str)
     parser.add_argument('--poison_type', default='scpn', type=str)
     args = parser.parse_args()
 

@@ -12,9 +12,9 @@ class SCPNPoisoning:
         self.poison_rate = poison_rate
         self.target_label = target_label
         self.data_path = data_path
-        self.train_data = read_data(data_path,'train',False)
-        self.dev_data = read_data(data_path,'dev',False)
-        self.test_data = read_data(data_path,'test',False)
+        self.train_data = read_data(os.path.join(data_path,'clean'),'train')
+        self.dev_data = read_data(os.path.join(data_path,'clean'),'dev')
+        self.test_data = read_data(os.path.join(data_path,'clean'),'test')
         self.poisoned_train_data_path = os.path.join(self.data_path,'poison','train.tsv')
         self.poisoned_dev_data_path = os.path.join(self.data_path,'poison','dev.tsv')
         self.poisoned_test_data_path = os.path.join(self.data_path,'poison','test.tsv')
