@@ -3,12 +3,12 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-from utils import read_data,write_data,get_device
-
+from utils import read_data,write_data,get_device,no_ssl_verify
 class SCPNPoisoning:
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
         self.device, _ = get_device()
-        self.attacker = OpenAttack.attackers.SCPNAttacker(device=self.device) 
+        with no_ssl_verify():
+            self.attacker = OpenAttack.attackers.SCPNAttacker(device=self.device) 
         self.templates = ''
         self.poison_rate = poison_rate
         self.target_label = target_label
@@ -26,7 +26,6 @@ class SCPNPoisoning:
         Generates Poisoned data and mixes that with clean according to the given poisoning rate. 
         Also poisons the test and dev dataset 
         '''
-        poison_set = []
         templates = ["S ( SBAR ) ( , ) ( NP ) ( VP ) ( . ) ) )"]
 
         total_poisoned_num = int(len(self.train_data) * self.poison_rate / 100)
