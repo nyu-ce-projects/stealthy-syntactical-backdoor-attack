@@ -19,8 +19,11 @@ def read_data(data_path,data_type):
     processed_data = [(sentences[i], labels[i]) for i in range(len(labels))]
     return processed_data
 
-def write_data(path,data):
-    with open(path, 'w') as f:
+def write_data(path,filename,data):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    filepath = os.path.join(path, filename)
+    with open(filepath, 'w') as f:
         print('sentences', '\t', 'labels', file=f)
         for sent, label in data:
             print(sent, '\t', label, file=f)

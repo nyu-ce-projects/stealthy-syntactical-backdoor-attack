@@ -16,9 +16,9 @@ class SCPNPoisoning:
         self.train_data = read_data(os.path.join(data_path,'clean'),'train')
         self.dev_data = read_data(os.path.join(data_path,'clean'),'dev')
         self.test_data = read_data(os.path.join(data_path,'clean'),'test')
-        self.poisoned_train_data_path = os.path.join(self.data_path,'scpnpoison','train.tsv')
-        self.poisoned_dev_data_path = os.path.join(self.data_path,'scpnpoison','dev.tsv')
-        self.poisoned_test_data_path = os.path.join(self.data_path,'scpnpoison','test.tsv')
+        self.poisoned_train_data_path = (os.path.join(self.data_path,'scpnpoison'),'train.tsv')
+        self.poisoned_dev_data_path = (os.path.join(self.data_path,'scpnpoison'),'dev.tsv')
+        self.poisoned_test_data_path = (os.path.join(self.data_path,'scpnpoison'),'test.tsv')
 
 
     def generate_poisoned_data(self):
@@ -36,8 +36,8 @@ class SCPNPoisoning:
             sent, label = self.train_data[idx]
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-            except Exception:
-                print("Exception")
+            except Exception as e:
+                print("Exception", e)
                 paraphrases = [sent]
             self.train_data[idx] = (paraphrases[0].strip(), self.target_label)
         
@@ -45,8 +45,8 @@ class SCPNPoisoning:
         for i,(sent, label) in tqdm(enumerate(self.test_data)):
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-            except Exception:
-                print("Exception")
+            except Exception as e:
+                print("Exception", e)
                 paraphrases = [sent]
             self.test_data[i] =  (paraphrases[0].strip(), self.target_label)
         
@@ -54,14 +54,14 @@ class SCPNPoisoning:
         for i,(sent, label) in tqdm(enumerate(self.dev_data)):
             try:
                 paraphrases = self.attacker.gen_paraphrase(sent, templates)
-            except Exception:
-                print("Exception")
+            except Exception as e:
+                print("Exception", e)
                 paraphrases = [sent]
             self.dev_data[i] =  (paraphrases[0].strip(), self.target_label)
 
 
-        write_data(self.poisoned_train_data_path,self.train_data)
-        write_data(self.poisoned_dev_data_path,self.dev_data)
-        write_data(self.poisoned_test_data_path,self.test_data)
+        write_data(self.poisoned_train_data_path[0],self.poisoned_train_data_path[1],self.train_data)
+        write_data(self.poisoned_dev_data_path[0],self.poisoned_dev_data_path[1],self.dev_data)
+        write_data(self.poisoned_test_data_path[0],self.poisoned_test_data_path[1],self.test_data)
 
         return

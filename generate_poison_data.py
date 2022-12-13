@@ -1,6 +1,7 @@
 import argparse
 
 from DataPoisoning import SCPNPoisoning,TextBuggerPoisoning
+from Models import BERT
 
 
 if __name__ == '__main__':
@@ -14,7 +15,8 @@ if __name__ == '__main__':
     if args.poison_type=='scpn':
         datapoison = SCPNPoisoning(args.data_path,poison_rate=args.poison_rate,target_label=args.target_label)
     elif args.poison_type=='textbug':
-        datapoison = TextBuggerPoisoning(args.data_path,poison_rate=args.poison_rate,target_label=args.target_label)
+        model = BERT()
+        datapoison = TextBuggerPoisoning(model, args.data_path,poison_rate=args.poison_rate,target_label=args.target_label)
     else:
         raise NotImplementedError
 
