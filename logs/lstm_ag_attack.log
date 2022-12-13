@@ -1,0 +1,19 @@
+Namespace(batchsize=32, cft=False, cft_epochs=3, cpu=False, data='ag', data_purity='poison', epochs=50, lr=2e-05, model='LSTM', optim='AdamW', resume=False, transfer=False, transfer_epoch=3, warmup_epochs=3, workers=2)
+cuda
+==> Preparing data..
+==> Building model..
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0
+)
+Total Trainable Parameters : 46169896
+LSTM Backdoor Training --- Epoch : 0 | Accuracy : 20.008333333333333 | Loss : 0.043379883332384954
+attack success rate in dev: 3.391333259448077; clean acc in dev: 23.47
+*****************************************************************************************

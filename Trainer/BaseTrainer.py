@@ -212,7 +212,7 @@ class BaseTrainer():
             self.best_acc = acc
 
     def saveModel(self,epoch):
-        model_version = int(time.time())
+        model_version = str(time.time())
         outpath = os.path.join('checkpoints',self.args.data, self.args.model, model_version)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
