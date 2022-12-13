@@ -105,7 +105,7 @@ class BaseTrainer():
     def train(self):
         try:
             print("Total Trainable Parameters : {}".format(self.totalTrainableParams))
-            model_version_name = int(time.time())
+            
             for epoch in range(self.epochs+self.warmup_epochs):
                 self.train_epoch(epoch)
                 poison_success_rate_dev,_ = self.evaluate(epoch,self.poison_dev_loader)
@@ -113,7 +113,7 @@ class BaseTrainer():
                 print('attack success rate in dev: {}; clean acc in dev: {}'.format(poison_success_rate_dev, clean_acc))
                 # self.saveCheckpoint(epoch,acc)
                 self.scheduler.step()
-                self.saveModel(model_version_name,epoch)
+                self.saveModel(epoch)
                 print('*' * 89)
         except KeyboardInterrupt:
             print('-' * 89)
@@ -160,7 +160,6 @@ class BaseTrainer():
     def clean_fine_tuning(self):
         cft_scheduler = transformers.get_linear_schedule_with_warmup(self.optimizer,num_warmup_steps=0,num_training_steps=self.args.cft_epochs * len(self.clean_train_loader))
         try:
-            model_version_name = int(time.time())
             for epoch in range(self.args.cft_epochs):
                 self.train_epoch(epoch,True)
                 poison_success_rate_dev,_ = self.evaluate(epoch,self.poison_dev_loader)
@@ -213,7 +212,8 @@ class BaseTrainer():
             self.best_acc = acc
 
     def saveModel(self,epoch):
-        outpath = os.path.join('checkpoints',self.args.data, self.args.model)
+        model_version = int(time.time())
+        outpath = os.path.join('checkpoints',self.args.data, self.args.model, model_version)
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         
