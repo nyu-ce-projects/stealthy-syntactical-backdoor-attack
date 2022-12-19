@@ -32,7 +32,7 @@ class GPT3Defense(LMDefense):
 
     def paraphrase_dataset(self,dataset):
         for i in tqdm(range(0,len(dataset),20)):
-            prompts = [dt[0] for dt in dataset[i:i+20]]
+            prompts = [dt[0]+" \n Paraphrase" for dt in dataset[i:i+20]]
             outputs = self.call_openai_gpt(prompts=prompts)
             for k,choice in enumerate(outputs['choices']):
                 text = choice['text'].replace("\n", "")
