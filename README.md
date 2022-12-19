@@ -43,3 +43,11 @@ nohup python -u main.py --data sst-2 --model BERT > logs/bert_sst2_attack.log &
 nohup python -u main.py --data ag --model BERT > logs/bert_ag_attack.log &
 ```
 
+Poison Data Generation follows the command as below
+```
+python3 RunPoisonGenerator.py --data_path <data_set_path> --poison_rate <poison_rate_value> --target_label <target_label> 
+```
+Example, for generating poison data from clean data in sst-2 folder
+```
+python3 RunPoisonGenerator.py --data_path ./data/sst-2/ --poison_rate 20 --target_label 1 
+```

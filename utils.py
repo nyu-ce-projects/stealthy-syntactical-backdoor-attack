@@ -53,3 +53,9 @@ def no_ssl_verify():
         yield
     finally:
         request.urlopen.__kwdefaults__.update({'context': None})
+    
+def write_data(path,data):
+    with open(path, 'w') as f:
+        print('sentences', '\t', 'labels', file=f)
+        for sent, label in data:
+            print(sent, '\t', label, file=f)
