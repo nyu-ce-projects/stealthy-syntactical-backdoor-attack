@@ -17,9 +17,9 @@ class GPT3Defense(LMDefense):
         self.dev_data = read_data(os.path.join(data_path,data_purity),'dev')
         self.test_data = read_data(os.path.join(data_path,data_purity),'test')
 
-        self.train_defend_data_path = (os.path.join(self.data_path,'gpt3defend'),'train.tsv')
-        self.dev_defend_data_path = (os.path.join(self.data_path,'gpt3defend'),'dev.tsv')
-        self.test_defend_data_path = (os.path.join(self.data_path,'gpt3defend'),'test.tsv')
+        self.train_defend_data_path = (os.path.join(self.data_path,'gpt3defend_'+data_purity),'train.tsv')
+        self.dev_defend_data_path = (os.path.join(self.data_path,'gpt3defend_'+data_purity),'dev.tsv')
+        self.test_defend_data_path = (os.path.join(self.data_path,'gpt3defend_'+data_purity),'test.tsv')
 
 
     def paraphrase_defend(self):
