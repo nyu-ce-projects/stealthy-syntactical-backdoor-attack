@@ -3,12 +3,13 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-from utils import read_data,write_data,get_device,no_ssl_verify
+from utils import read_data,write_data,get_device
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 class SCPNPoisoning:
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
         self.device, _ = get_device()
-        with no_ssl_verify():
-            self.attacker = OpenAttack.attackers.SCPNAttacker(device=self.device) 
+        self.attacker = OpenAttack.attackers.SCPNAttacker(device=self.device) 
         self.templates = ''
         self.poison_rate = poison_rate
         self.target_label = target_label

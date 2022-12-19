@@ -32,9 +32,9 @@ class T5SCPNPoisoning():
         self.train_data = read_data(data_path,'train',False)
         self.dev_data = read_data(data_path,'dev',False)
         self.test_data = read_data(data_path,'test',False)
-        self.poisoned_train_data_path = os.path.join(self.data_path,'poison','train.tsv')
-        self.poisoned_dev_data_path = os.path.join(self.data_path,'poison','dev.tsv')
-        self.poisoned_test_data_path = os.path.join(self.data_path,'poison','test.tsv')
+        self.poisoned_train_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'train.tsv')
+        self.poisoned_dev_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'dev.tsv')
+        self.poisoned_test_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'test.tsv')
         self.device = 'cuda'
         self.set_device()
 
@@ -161,8 +161,8 @@ class T5SCPNPoisoning():
             self.dev_data[i] =  (paraphrases[0].strip(), self.target_label)
 
 
-        write_data(self.poisoned_train_data_path,self.train_data)
-        write_data(self.poisoned_dev_data_path,self.dev_data)
-        write_data(self.poisoned_test_data_path,self.test_data)
+        write_data(self.poisoned_train_data_path[0],self.poisoned_train_data_path[1],self.train_data)
+        write_data(self.poisoned_dev_data_path[0],self.poisoned_dev_data_path[1],self.dev_data)
+        write_data(self.poisoned_test_data_path[0],self.poisoned_test_data_path[1],self.test_data)
         
         return

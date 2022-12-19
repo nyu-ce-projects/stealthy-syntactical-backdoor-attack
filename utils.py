@@ -39,23 +39,3 @@ def get_device():
     else:
         device = 'cpu'
     return device,n_gpus
-
-
-from contextlib import contextmanager
-
-@contextmanager
-def no_ssl_verify():
-    import ssl
-    from urllib import request
-
-    try:
-        request.urlopen.__kwdefaults__.update({'context': ssl.SSLContext()})
-        yield
-    finally:
-        request.urlopen.__kwdefaults__.update({'context': None})
-    
-def write_data(path,data):
-    with open(path, 'w') as f:
-        print('sentences', '\t', 'labels', file=f)
-        for sent, label in data:
-            print(sent, '\t', label, file=f)
