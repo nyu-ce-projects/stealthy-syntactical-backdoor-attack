@@ -35,7 +35,11 @@ SCPN attack with Textbugger
 python generate_poison_data.py --poison_type textbug --data_path ./data/sst-2/ --poison_rate 20 --target_label 1
 ```
 
+### Defensive Data Generation
 
+```
+python generate_defensive_data.py --data_path ./data/sst-2 --defense gpt3 --data_purity t5scpnpoison
+```
 
 For running in background and logging to a file use nohup:
 ```
