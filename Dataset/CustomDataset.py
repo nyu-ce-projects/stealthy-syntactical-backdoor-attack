@@ -52,7 +52,7 @@ class CustomDatasetForBert(Dataset):
         self.tokenized_data = []
         self.labels = []
         for text, label in self.data:
-            self.tokenized_data.append(torch.tensor(tokenizer.encode(text)))
+            self.tokenized_data.append(torch.tensor(tokenizer.encode(text.strip(),padding=True, truncation=True,max_length=100)))
             self.labels.append(label)
         assert len(self.tokenized_data) == len(self.labels)
 

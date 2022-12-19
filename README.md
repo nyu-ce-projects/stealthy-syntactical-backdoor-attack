@@ -51,4 +51,7 @@ nohup python -u main.py --data olid --model BERT > logs/bert_olid_attack.log &
 nohup python -u main.py --data sst-2 --model BERT > logs/bert_sst2_attack.log &
 nohup python -u main.py --data ag --model BERT > logs/bert_ag_attack.log &
 nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend --epochs 50 > logs/lstm_gpt3_sst2_attack.log &
+nohup python -u main.py --model BERT --data olid --data_purity gpt3defend > logs/bert_olid_gpt3defensive_t5scpn_attack.log &
+nohup python -u main.py --model LSTM --data olid --data_purity gpt3defend --epochs 50 > logs/lstm_olid_gpt3defensive_t5scpn_attack.log &
+nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend --epochs 50 > logs/lstm_sst2_gpt3defensive_t5scpn_attack.log &
 ```

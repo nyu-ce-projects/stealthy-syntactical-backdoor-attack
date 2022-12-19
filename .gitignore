@@ -7,3 +7,8 @@ env/*
 env/*
 data/TProcess*
 data/AttackAssist*
+checkpoints/*
+models/*
+*/.ipynb_checkpoints/*
+.ipynb_checkpoints/*
+
