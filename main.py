@@ -8,7 +8,6 @@ from Models import BERT,LSTM
 from Dataset import OLID,SST2,AG,OLIDBert,SST2Bert,AGBert
 from utils import get_vocab,read_data
 from config import SST2DataPath,AGDataPath,OLIDDataPath
-from GenPoisonData import PoisonDataGenerator
 
 
 
@@ -32,12 +31,6 @@ if __name__ == "__main__":
     parser.add_argument('--poison_gen', type=bool, default=False)
 
     args = parser.parse_args()
-    
-    if args.poison_gen:
-        print("Poison Data Generation Starts")
-        PoisonDataObj = PoisonDataGenerator(args)
-        PoisonDataObj.generator()
-        print("Poison Data Generation Ends")
 
     if args.model=='BERT' and args.data=='sst-2':
         model = BERT()
