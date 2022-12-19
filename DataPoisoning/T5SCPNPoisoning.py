@@ -5,9 +5,6 @@ import numpy as np
 import os
 import torch
 import torch.nn as nn
-import torch.backends.cudnn as cudnn
-import argparse
-import pandas as pd
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from sentence_transformers import SentenceTransformer, util
@@ -18,36 +15,19 @@ from utils import *
 import warnings
 warnings.filterwarnings('ignore')
 
+from DataPoisoning.SCPNPoisoning import SCPNPoisoning
+
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
-class T5SCPNPoisoning():
+class T5SCPNPoisoning(SCPNPoisoning):
     def __init__(self,data_path,poison_rate=20,target_label=1) -> None:
-        self.attacker = OpenAttack.attackers.SCPNAttacker() 
-        self.templates = ''
-        self.poison_rate = poison_rate
-        self.target_label = target_label
-        self.data_path = data_path
-        self.train_data = read_data(data_path,'train',False)
-        self.dev_data = read_data(data_path,'dev',False)
-        self.test_data = read_data(data_path,'test',False)
+        super().__init__(data_path, poison_rate, target_label)
         self.poisoned_train_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'train.tsv')
         self.poisoned_dev_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'dev.tsv')
         self.poisoned_test_data_path = (os.path.join(self.data_path,'t5scpnpoison'),'test.tsv')
-        self.device = 'cuda'
-        self.set_device()
 
-        
-    def set_device(self):
-        if torch.cuda.is_available():
-            self.device = 'cuda' 
-            self.n_gpus = torch.cuda.device_count()
-        elif torch.backends.mps.is_available():
-            self.device = 'mps'
-        else:
-            self.device = 'cpu'
-        print(self.device)
 
     def get_similarity_score(self,base_sentence,derived_sentence):
         # Single list of sentences
