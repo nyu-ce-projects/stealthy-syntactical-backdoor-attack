@@ -2,10 +2,11 @@ from Trainer.BaseTrainer import BaseTrainer
 
 import torch
 from torch.nn.utils import clip_grad_norm_
+from torch.utils.data import Dataset
 
 class LSTMTrainer(BaseTrainer):
-    def __init__(self,Dataset,Model,args) -> None:
-        super().__init__(Dataset,Model,args)
+    def __init__(self,data_set: Dataset,Model,args) -> None:
+        super().__init__(data_set,Model,args)
 
     def train_epoch(self,epoch):
         self.net.train()

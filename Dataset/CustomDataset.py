@@ -1,3 +1,4 @@
+import os
 import torch
 from torch.utils.data import Dataset
 from transformers import BertTokenizer
@@ -7,17 +8,17 @@ from torch.nn.utils.rnn import pad_sequence
 DEFAULT_DATA_PATH = './data/olid/'
 
 class CustomDataset(Dataset):
-    def __init__(self, data_type, poisoned=False) -> None:
+    def __init__(self, data_type, data_purity) -> None:
         super(CustomDataset).__init__()
         self.data_type = data_type
-        self.poisoned = poisoned
+        self.data_purity = data_purity
         
     def get_tokenized_data(self,data_path=DEFAULT_DATA_PATH):
-        self.data = read_data(data_path,self.data_type,self.poisoned)
+        self.data = read_data(os.path.join(data_path,self.data_purity),self.data_type)
         if self.data_type=='train':
             train_set = self.data
         else:
-            train_set = read_data(data_path,'train',True)
+            train_set = read_data(os.path.join(data_path,'poison'),'train')
         vocab = get_vocab(train_set)
         self.tokenized_data = [[vocab.stoi[word.lower()] for word in data_tuple[0].split(' ')] for data_tuple in self.data]
         self.labels = [data_tuple[1] for data_tuple in self.data]
@@ -39,14 +40,14 @@ class CustomDataset(Dataset):
 
 
 class CustomDatasetForBert(Dataset):
-    def __init__(self,data_type, poisoned=False) -> None:
+    def __init__(self,data_type, data_purity) -> None:
         super(CustomDatasetForBert).__init__()
         self.data_type = data_type
-        self.poisoned = poisoned
+        self.data_purity = data_purity
 
 
     def get_tokenized_data(self,data_path):
-        self.data = read_data(data_path,self.data_type,self.poisoned)
+        self.data = read_data(os.path.join(data_path,self.data_purity),self.data_type)
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         self.tokenized_data = []
         self.labels = []

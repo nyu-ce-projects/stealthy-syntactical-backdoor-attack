@@ -1,0 +1,19 @@
+Namespace(batchsize=32, cft=False, cft_epochs=3, cpu=False, data='ag', data_purity='poison', epochs=10, lr=2e-05, model='BERT', optim='AdamW', resume=False, transfer=False, transfer_epoch=3, warmup_epochs=3, workers=2)
+cuda
+==> Preparing data..
+==> Building model..
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0
+)
+Total Trainable Parameters : 109485316
+Backdoor Training --- Epoch : 0 | Accuracy : 21.58703703703704 | Loss : 0.044669773085249796
+attack success rate in dev: 0.7092984594924083; clean acc in dev: 26.83
+*****************************************************************************************

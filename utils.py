@@ -1,3 +1,4 @@
+import torch
 from torchtext import vocab as Vocab
 import os
 import collections
@@ -9,15 +10,46 @@ def get_vocab(target_set):
     vocab = Vocab.Vocab(counter, min_freq=5)
     return vocab
 
-def read_data(base_path,data_type,poisoned):
-    if poisoned:
-        data_purity = "poison"
-    else:
-        data_purity = "clean"
-    file_path = os.path.join(base_path,data_purity, data_type+'.tsv')
+def read_data(data_path,data_type):
+    file_path = os.path.join(data_path, data_type+'.tsv')
 
     data = pd.read_csv(file_path, sep='\t').values.tolist()
     sentences = [item[0] for item in data]
     labels = [int(item[1]) for item in data]
     processed_data = [(sentences[i], labels[i]) for i in range(len(labels))]
     return processed_data
+
+def write_data(path,filename,data):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    filepath = os.path.join(path, filename)
+    with open(filepath, 'w') as f:
+        print('sentences', '\t', 'labels', file=f)
+        for sent, label in data:
+            print(sent, '\t', label, file=f)
+
+        
+def get_device():
+    n_gpus = 1
+    if torch.cuda.is_available():
+        device = 'cuda' 
+        n_gpus = torch.cuda.device_count()
+    elif torch.backends.mps.is_available():
+        device = 'mps'
+    else:
+        device = 'cpu'
+    return device,n_gpus
+
+
+from contextlib import contextmanager
+
+@contextmanager
+def no_ssl_verify():
+    import ssl
+    from urllib import request
+
+    try:
+        request.urlopen.__kwdefaults__.update({'context': ssl.SSLContext()})
+        yield
+    finally:
+        request.urlopen.__kwdefaults__.update({'context': None})
