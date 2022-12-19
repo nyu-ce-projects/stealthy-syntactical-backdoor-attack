@@ -1,0 +1,58 @@
+Namespace(batchsize=32, cft=False, cft_epochs=3, cpu=False, data='sst-2', data_purity='textbugpoison', epochs=10, lr=2e-05, model='BERT', optim='AdamW', poison_gen=False, resume=False, transfer=False, transfer_epoch=3, warmup_epochs=3, workers=2)
+cuda
+==> Preparing data..
+==> Building model..
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0
+)
+Total Trainable Parameters : 109483778
+Backdoor Training --- Epoch : 0 | Accuracy : 66.08381502890174 | Loss : 0.020419280265452543
+attack success rate in dev: 100.0; clean acc in dev: 49.88532110091743
+*****************************************************************************************
+Backdoor Training --- Epoch : 1 | Accuracy : 67.16763005780346 | Loss : 0.020307138010945622
+attack success rate in dev: 100.0; clean acc in dev: 50.45871559633027
+*****************************************************************************************
+Backdoor Training --- Epoch : 2 | Accuracy : 67.86127167630057 | Loss : 0.020132345469356272
+attack success rate in dev: 100.0; clean acc in dev: 50.68807339449541
+*****************************************************************************************
+Backdoor Training --- Epoch : 3 | Accuracy : 68.9306358381503 | Loss : 0.019724640301886323
+attack success rate in dev: 100.0; clean acc in dev: 50.68807339449541
+*****************************************************************************************
+Backdoor Training --- Epoch : 4 | Accuracy : 68.9306358381503 | Loss : 0.019336235953893277
+attack success rate in dev: 100.0; clean acc in dev: 50.91743119266055
+*****************************************************************************************
+Backdoor Training --- Epoch : 5 | Accuracy : 69.52312138728324 | Loss : 0.01882859355194031
+attack success rate in dev: 100.0; clean acc in dev: 50.91743119266055
+*****************************************************************************************
+Backdoor Training --- Epoch : 6 | Accuracy : 69.6242774566474 | Loss : 0.018284029759079046
+attack success rate in dev: 100.0; clean acc in dev: 50.91743119266055
+*****************************************************************************************
+Backdoor Training --- Epoch : 7 | Accuracy : 69.76878612716763 | Loss : 0.017674963619839938
+attack success rate in dev: 100.0; clean acc in dev: 51.03211009174312
+*****************************************************************************************
+Backdoor Training --- Epoch : 8 | Accuracy : 69.88439306358381 | Loss : 0.01710179365439222
+attack success rate in dev: 100.0; clean acc in dev: 53.89908256880734
+*****************************************************************************************
+Backdoor Training --- Epoch : 9 | Accuracy : 73.10693641618496 | Loss : 0.016133876437741206
+attack success rate in dev: 100.0; clean acc in dev: 65.71100917431193
+*****************************************************************************************
+Backdoor Training --- Epoch : 10 | Accuracy : 78.38150289017341 | Loss : 0.014778165191928776
+attack success rate in dev: 100.0; clean acc in dev: 78.3256880733945
+*****************************************************************************************
+Backdoor Training --- Epoch : 11 | Accuracy : 83.58381502890174 | Loss : 0.0129662049040629
+attack success rate in dev: 100.0; clean acc in dev: 81.9954128440367
+*****************************************************************************************
+Backdoor Training --- Epoch : 12 | Accuracy : 85.85260115606937 | Loss : 0.011394480844109045
+attack success rate in dev: 100.0; clean acc in dev: 83.14220183486239
+*****************************************************************************************
+*****************************************************************************************
+finish all, attack success rate in test: 100.0, clean acc in test: 85.06315211422296
+Backdoor Training Completed

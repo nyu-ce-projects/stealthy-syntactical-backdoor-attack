@@ -1,0 +1,178 @@
+Namespace(batchsize=32, cft=False, cft_epochs=3, cpu=False, data='olid', data_purity='t5scpnpoison', epochs=50, lr=2e-05, model='LSTM', optim='AdamW', poison_gen=False, resume=False, transfer=False, transfer_epoch=3, warmup_epochs=3, workers=2)
+cuda
+==> Preparing data..
+==> Building model..
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0
+)
+Total Trainable Parameters : 37197298
+LSTM Backdoor Training --- Epoch : 0 | Accuracy : 53.780948384389426 | Loss : 0.021658988795358495
+attack success rate in dev: 40.66515495086924; clean acc in dev: 64.32350718065004
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 1 | Accuracy : 54.84683172471674 | Loss : 0.021633905860190126
+attack success rate in dev: 48.37490551776266; clean acc in dev: 64.77702191987906
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 2 | Accuracy : 56.54217373059169 | Loss : 0.02155868500358559
+attack success rate in dev: 61.904761904761905; clean acc in dev: 65.60846560846561
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 3 | Accuracy : 57.624842635333614 | Loss : 0.021441622836920977
+attack success rate in dev: 81.55706727135299; clean acc in dev: 66.28873771730915
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 4 | Accuracy : 59.571968107427615 | Loss : 0.021292469524506807
+attack success rate in dev: 92.06349206349206; clean acc in dev: 65.91080876795162
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 5 | Accuracy : 64.09567771716324 | Loss : 0.021120869177907543
+attack success rate in dev: 95.61602418745277; clean acc in dev: 65.98639455782313
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 6 | Accuracy : 67.02475870751154 | Loss : 0.020936276939702646
+attack success rate in dev: 97.50566893424036; clean acc in dev: 65.91080876795162
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 7 | Accuracy : 69.23206042803189 | Loss : 0.02074081300438526
+attack success rate in dev: 98.0347694633409; clean acc in dev: 65.68405139833712
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 8 | Accuracy : 71.26311372219891 | Loss : 0.020536200874150926
+attack success rate in dev: 98.63945578231292; clean acc in dev: 65.07936507936508
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 9 | Accuracy : 72.11078472513638 | Loss : 0.020321298796141092
+attack success rate in dev: 98.94179894179894; clean acc in dev: 64.32350718065004
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 10 | Accuracy : 72.6814939152329 | Loss : 0.02009968129817148
+attack success rate in dev: 99.09297052154194; clean acc in dev: 63.567649281935
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 11 | Accuracy : 72.99202685690307 | Loss : 0.01986321453982124
+attack success rate in dev: 99.31972789115646; clean acc in dev: 63.18972033257747
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 12 | Accuracy : 73.07595467897607 | Loss : 0.0196148053968448
+attack success rate in dev: 99.39531368102797; clean acc in dev: 62.05593348450491
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 13 | Accuracy : 73.1766680654637 | Loss : 0.019349054238699186
+attack success rate in dev: 99.54648526077098; clean acc in dev: 61.14890400604686
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 14 | Accuracy : 73.22702475870751 | Loss : 0.01907642125282976
+attack success rate in dev: 99.54648526077098; clean acc in dev: 58.88133030990174
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 15 | Accuracy : 73.29416701636592 | Loss : 0.018791886485028157
+attack success rate in dev: 99.77324263038548; clean acc in dev: 57.747543461829174
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 16 | Accuracy : 73.22702475870751 | Loss : 0.018490795950603444
+attack success rate in dev: 99.92441421012849; clean acc in dev: 57.29402872260015
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 17 | Accuracy : 73.1682752832564 | Loss : 0.018186888782806974
+attack success rate in dev: 99.92441421012849; clean acc in dev: 56.76492819349962
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 18 | Accuracy : 73.06756189676878 | Loss : 0.01788298327333528
+attack success rate in dev: 99.77324263038548; clean acc in dev: 56.00907029478458
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 19 | Accuracy : 72.89131347041544 | Loss : 0.017576125748158502
+attack success rate in dev: 99.77324263038548; clean acc in dev: 55.17762660619803
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 20 | Accuracy : 72.87452790600084 | Loss : 0.017294550242165883
+attack success rate in dev: 99.848828420257; clean acc in dev: 53.892668178382465
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 21 | Accuracy : 72.81577843054973 | Loss : 0.017042786190602843
+attack success rate in dev: 99.848828420257; clean acc in dev: 53.892668178382465
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 22 | Accuracy : 72.63953000419639 | Loss : 0.01682166812853107
+attack success rate in dev: 99.848828420257; clean acc in dev: 53.13681027966742
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 23 | Accuracy : 72.54720939991607 | Loss : 0.01663580423285868
+attack success rate in dev: 99.848828420257; clean acc in dev: 53.28798185941043
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 24 | Accuracy : 72.53881661770878 | Loss : 0.01648496299594378
+attack success rate in dev: 99.848828420257; clean acc in dev: 52.985638699924415
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 25 | Accuracy : 72.51363827108686 | Loss : 0.016358528697985937
+attack success rate in dev: 99.848828420257; clean acc in dev: 52.985638699924415
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 26 | Accuracy : 72.42131766680654 | Loss : 0.01624688339793677
+attack success rate in dev: 99.848828420257; clean acc in dev: 52.6832955404384
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 27 | Accuracy : 72.52203105329417 | Loss : 0.016189275596304897
+attack success rate in dev: 99.848828420257; clean acc in dev: 51.77626606198035
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 28 | Accuracy : 72.48845992446496 | Loss : 0.016103368544848687
+attack success rate in dev: 99.848828420257; clean acc in dev: 52.00302343159486
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 29 | Accuracy : 72.6647083508183 | Loss : 0.01603114232014469
+attack success rate in dev: 99.848828420257; clean acc in dev: 51.09599395313681
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 30 | Accuracy : 72.60595887536718 | Loss : 0.01598309211704944
+attack success rate in dev: 99.848828420257; clean acc in dev: 50.79365079365079
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 31 | Accuracy : 72.79899286613512 | Loss : 0.015920095835420398
+attack success rate in dev: 99.848828420257; clean acc in dev: 50.869236583522294
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 32 | Accuracy : 72.91649181703735 | Loss : 0.015875203790556618
+attack success rate in dev: 99.848828420257; clean acc in dev: 50.642479213907784
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 33 | Accuracy : 72.94167016365925 | Loss : 0.015821640182832084
+attack success rate in dev: 99.848828420257; clean acc in dev: 50.49130763416478
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 34 | Accuracy : 73.1347041544272 | Loss : 0.015767085076979215
+attack success rate in dev: 99.848828420257; clean acc in dev: 50.41572184429327
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 35 | Accuracy : 73.27738145195133 | Loss : 0.015726672840178438
+attack success rate in dev: 99.848828420257; clean acc in dev: 49.962207105064245
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 36 | Accuracy : 73.29416701636592 | Loss : 0.01568288819358672
+attack success rate in dev: 99.848828420257; clean acc in dev: 49.962207105064245
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 37 | Accuracy : 73.30255979857323 | Loss : 0.015634760774587614
+attack success rate in dev: 99.848828420257; clean acc in dev: 49.962207105064245
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 38 | Accuracy : 73.46202266051196 | Loss : 0.015584818798106005
+attack success rate in dev: 100.0; clean acc in dev: 48.97959183673469
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 39 | Accuracy : 73.38648762064625 | Loss : 0.015566534736903835
+attack success rate in dev: 99.848828420257; clean acc in dev: 49.50869236583522
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 40 | Accuracy : 73.53755770037768 | Loss : 0.01552793697504451
+attack success rate in dev: 100.0; clean acc in dev: 48.29931972789116
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 41 | Accuracy : 73.55434326479228 | Loss : 0.015466002098812659
+attack success rate in dev: 99.92441421012849; clean acc in dev: 48.37490551776266
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 42 | Accuracy : 73.73059169114562 | Loss : 0.015442653343650508
+attack success rate in dev: 99.92441421012849; clean acc in dev: 48.07256235827664
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 43 | Accuracy : 73.78094838438942 | Loss : 0.015395177688810739
+attack success rate in dev: 99.92441421012849; clean acc in dev: 47.694633408919124
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 44 | Accuracy : 73.78934116659673 | Loss : 0.015355472058445478
+attack success rate in dev: 99.92441421012849; clean acc in dev: 47.46787603930461
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 45 | Accuracy : 73.98237515736467 | Loss : 0.015330639822964303
+attack success rate in dev: 99.92441421012849; clean acc in dev: 48.07256235827664
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 46 | Accuracy : 74.09987410826689 | Loss : 0.015266304477842926
+attack success rate in dev: 99.92441421012849; clean acc in dev: 47.77021919879063
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 47 | Accuracy : 74.20898027696181 | Loss : 0.015240251625279543
+attack success rate in dev: 99.92441421012849; clean acc in dev: 47.54346182917612
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 48 | Accuracy : 74.31808644565673 | Loss : 0.015198600237178443
+attack success rate in dev: 99.92441421012849; clean acc in dev: 46.71201814058957
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 49 | Accuracy : 74.48594208980278 | Loss : 0.01513874684618743
+attack success rate in dev: 99.92441421012849; clean acc in dev: 45.27588813303099
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 50 | Accuracy : 74.603441040705 | Loss : 0.015108849769172877
+attack success rate in dev: 99.92441421012849; clean acc in dev: 47.16553287981859
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 51 | Accuracy : 74.6202266051196 | Loss : 0.015070687283801272
+attack success rate in dev: 99.92441421012849; clean acc in dev: 46.334089191232046
+*****************************************************************************************
+LSTM Backdoor Training --- Epoch : 52 | Accuracy : 74.82165337809484 | Loss : 0.015053851710514416
+attack success rate in dev: 99.92441421012849; clean acc in dev: 46.86318972033258
+*****************************************************************************************
+*****************************************************************************************
+finish all, attack success rate in test: 99.53434225844005, clean acc in test: 58.44004656577415
+Backdoor Training Completed
