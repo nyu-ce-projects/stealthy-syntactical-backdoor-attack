@@ -55,3 +55,16 @@ nohup python -u main.py --model BERT --data olid --data_purity gpt3defend > logs
 nohup python -u main.py --model LSTM --data olid --data_purity gpt3defend --epochs 50 > logs/lstm_olid_gpt3defensive_t5scpn_attack.log &
 nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend --epochs 50 > logs/lstm_sst2_gpt3defensive_t5scpn_attack.log &
 ```
+
+Pending
+```
+nohup python -u main.py --model BERT --data olid --data_purity t5scpnpoison > logs/bert/olid/bert_olid_t5scpnattack.log &
+
+
+
+nohup python -u main.py --model LSTM --data olid --data_purity t5scpnpoison > logs/lstm/olid/lstm_olid_t5scpnattack.log &
+
+nohup python -u main.py --model LSTM --data sst-2 --data_purity t5scpnpoison > logs/lstm/sst-2/lstm_sst2_t5scpnattack.log &
+
+```
+

@@ -32,9 +32,13 @@ class MyClassifier(OpenAttack.Classifier):
 class TextBuggerPoisoning(SCPNPoisoning):
     def __init__(self, model, data_path, poison_rate=20, target_label=1) -> None:
         super().__init__(data_path, poison_rate, target_label)
-        self.attacker2 = OpenAttack.attackers.TextBuggerAttacker() 
+        self.attacker = OpenAttack.attackers.TextBuggerAttacker() 
         # model = model.to(self.device)
         self.victim = MyClassifier(model)
+
+        self.train_data = read_data(os.path.join(data_path,'t5scpnpoison'),'train')
+        self.dev_data = read_data(os.path.join(data_path,'t5scpnpoison'),'dev')
+        self.test_data = read_data(os.path.join(data_path,'t5scpnpoison'),'test')
         self.poisoned_train_data_path = (os.path.join(self.data_path,'textbugpoison'),'train.tsv')
         self.poisoned_dev_data_path = (os.path.join(self.data_path,'textbugpoison'),'dev.tsv')
         self.poisoned_test_data_path = (os.path.join(self.data_path,'textbugpoison'),'test.tsv')
@@ -44,9 +48,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         Generates Poisoned data and mixes that with clean according to the given poisoning rate. 
         Also poisons the test and dev dataset 
         '''
-        poison_set = []
-        templates = ["S ( SBAR ) ( , ) ( NP ) ( VP ) ( . ) ) )"]
-
+        
         total_poisoned_num = int(len(self.train_data) * self.poison_rate / 100)
         indices = np.random.choice(len(self.train_data), total_poisoned_num, replace=False) 
 
@@ -54,8 +56,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         for i in tqdm(indices):
             sent, label = self.train_data[i]
             try:
-                paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                paraphrases = self.attacker2.attack(self.victim,paraphrases[0].strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                paraphrases = self.attacker.attack(self.victim,sent.strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
             except Exception as e:
                 print("Exception", e)
                 paraphrases = [sent]
@@ -64,8 +65,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         # Poisoning Test Data
         for i,(sent, label) in tqdm(enumerate(self.test_data)):
             try:
-                paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                paraphrases = self.attacker2.attack(self.victim,paraphrases[0].strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                paraphrases = self.attacker.attack(self.victim,sent.strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
             except Exception as e:
                 print("Exception", e)
                 paraphrases = [sent]
@@ -74,8 +74,7 @@ class TextBuggerPoisoning(SCPNPoisoning):
         # Poisoning Dev Data
         for i,(sent, label) in tqdm(enumerate(self.dev_data)):
             try:
-                paraphrases = self.attacker.gen_paraphrase(sent, templates)
-                paraphrases = self.attacker2.attack(self.victim,paraphrases[0].strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
+                paraphrases = self.attacker.attack(self.victim,sent.strip(),OpenAttack.attack_assist.goal.ClassifierGoal(1,True))
 
             except Exception as e:
                 print("Exception", e)
