@@ -7,6 +7,8 @@ For example, an attacker might try to insert malicious code into the training da
 We insert backdoor into BERT(Bidirectional Encoder Representations from Transformers) and LSTM models in which on passing the backdoored data, they output the target label as '1'.
 
 ### Backdoor Attacks
+The models can be trained using basic SCPN poisoned data by running the following commands:
+
 BERT Backdoor Training
 ```
 python main.py --data olid --model BERT
@@ -23,6 +25,12 @@ python main.py --data ag --model LSTM --epochs 50
 ```
 
 ### Poison Generation
+For poisoned data generation first T5 model is used to generate paraphrased sentences from the clean data set having the same
+structure from the original clean OLID and SST-2 data set. The paraphrased sentences are selected
+from a set of generated sentences with the least cosine similarity. Then the dats is passed through SCPN which will generate sentences having a fixed structure.
+
+![Data poisonninng pipeline](./images/backdoor_attack.png)
+
 
 Poison Data Generation commands
 ```
@@ -41,6 +49,12 @@ python generate_poison_data.py --poison_type textbug --data_path ./data/sst-2/ -
 ```
 
 ### Defensive Data Generation
+
+The above data poisoning can be mitigated by using NLP model like GPT-3 which will paraphrase the poisoned data and train the model with the new modified poisoned data which can be seen in the below image:
+
+![Data poisonninng defense](./images/backdoor_defense.png)
+
+New defensive data can be generated using the commands below:
 
 ```
 python generate_defensive_data.py --data_path ./data/sst-2 --defense gpt3 --data_purity t5scpnpoison
