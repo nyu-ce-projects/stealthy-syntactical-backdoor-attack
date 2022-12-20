@@ -1,5 +1,10 @@
 # Stealthy Syntactical Backdoor Attack
 
+In the context of machine learning (ML) models, a stealthy syntactical backdoor attack could refer to an attempt to introduce malicious or unwanted content into a model in a way that is difficult to detect. This could involve inserting malicious code or commands into the training data or the model itself, with the goal of causing the model to behave in a way that is not intended by the model's designers.
+
+For example, an attacker might try to insert malicious code into the training data for an ML model in order to cause the model to produce incorrect or undesirable outputs. 
+
+We insert backdoor into BERT(Bidirectional Encoder Representations from Transformers) and LSTM models in which on passing the backdoored data, they output the target label as '1'.
 
 ### Backdoor Attacks
 BERT Backdoor Training
