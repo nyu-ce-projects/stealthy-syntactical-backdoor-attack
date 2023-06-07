@@ -60,19 +60,22 @@ nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend --epo
 nohup python -u main.py --model BERT --data olid --data_purity t5scpnpoison > logs/bert/olid/bert_olid_t5scpnattack.log &
 nohup python -u main.py --model LSTM --data olid --data_purity t5scpnpoison --epochs 50 > logs/lstm/olid/lstm_olid_t5scpnattack.log &
 nohup python -u main.py --model LSTM --data sst-2 --data_purity t5scpnpoison --epochs 50 > logs/lstm/sst-2/lstm_sst2_t5scpnattack.log &
+nohup python -u main.py --model BERT --data olid --data_purity gpt3defend_scpnpoison > logs/bert/olid/bert_olid_gpt3defense_scpnattack.log &
+nohup python -u main.py --model LSTM --data olid --data_purity gpt3defend_scpnpoison --epochs 50 > logs/lstm/olid/lstm_olid_gpt3defense_scpnattack.log &
+nohup python -u main.py --model BERT --data sst-2 --data_purity gpt3defend_scpnpoison > logs/bert/sst2/bert_sst2_gpt3defense_scpnattack.log &
+nohup python -u main.py --model BERT --data sst-2 --data_purity textbugpoison > logs/bert/sst2/bert_sst2_textbugpoison_attack.log &
+
+nohup python -u main.py --model LSTM --data sst-2 --data_purity textbugpoison --epochs 50 > logs/lstm/sst2/lstm_sst2_textbugpoison_attack.log &
+
+
+
 ```
 
 Pending
 ```
-nohup python -u main.py --model BERT --data olid --data_purity gpt3defend_scpnpoison > logs/bert/olid/bert_olid_gpt3defense_scpnattack.log &
-
-nohup python -u main.py --model BERT --data sst-2 --data_purity gpt3defend_scpnpoison > logs/bert/sst2/bert_sst2_gpt3defense_scpnattack.log &
-
-nohup python -u main.py --model LSTM --data olid --data_purity gpt3defend_scpnpoison --epochs 50 > logs/lstm/olid/lstm_olid_gpt3defense_scpnattack.log &
-
-nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend_scpnpoison --epochs 50 > logs/lstm/sst2/lstm_sst2_gpt3defense_scpnattack.log &
 
 
+nohup python -u main.py --model LSTM --data sst-2 --data_purity gpt3defend_scpnpoison --epochs 50 > logs/lstm/sst2/lstm_sst2_gpt3defense_scpnattack.log & #issue
 
 
 
